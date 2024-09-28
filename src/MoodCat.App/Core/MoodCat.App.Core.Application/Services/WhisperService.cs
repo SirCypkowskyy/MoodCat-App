@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using MoodCat.App.Common.BuildingBlocks.Abstractions.CQRS;
 using MoodCat.App.Common.BuildingBlocks.Extensions;
 using MoodCat.App.Core.Application.DTOs.OpenAI.Whisper;
-using MoodCat.App.Core.Application.OpenAI.Commands.SendGptAudioFile;
+using MoodCat.App.Core.Application.OpenAI.Commands.SendWhisperAudioFile;
 using OpenAI.Audio;
 
 namespace MoodCat.App.Core.Application.Services;
@@ -27,7 +27,7 @@ public class WhisperService(
         var audioFilePath = command.Request.File;
         byte[] audiofileBytes;
         var httpClient = new HttpClient();
-        using (HttpResponseMessage response = await httpClient.GetAsync(audioFilePath, cancellationToken))
+        using (var response = await httpClient.GetAsync(audioFilePath, cancellationToken))
         {
             response.EnsureSuccessStatusCode();
             audiofileBytes = await response.Content.ReadAsByteArrayAsync(cancellationToken);
@@ -38,7 +38,7 @@ public class WhisperService(
             ResponseFormat = AudioTranscriptionFormat.Text
         };
 
-        using (MemoryStream stream = new MemoryStream(audiofileBytes))
+        using (var stream = new MemoryStream(audiofileBytes))
         {
             var transcription = await whisperClient.TranscribeAudioAsync(stream, "transcribe.mp3",
                 options: audioTranscriptionOptions, cancellationToken: cancellationToken);

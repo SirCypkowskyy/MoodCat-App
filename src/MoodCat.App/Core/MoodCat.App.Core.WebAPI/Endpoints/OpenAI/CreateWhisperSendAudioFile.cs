@@ -2,7 +2,7 @@ using Carter;
 using MediatR;
 using Mapster;
 using MoodCat.App.Core.Application.DTOs.OpenAI.Whisper;
-using MoodCat.App.Core.Application.OpenAI.Commands.SendGptAudioFile;
+using MoodCat.App.Core.Application.OpenAI.Commands.SendWhisperAudioFile;
 
 namespace MoodCat.App.Core.WebAPI.Endpoints.OpenAI;
 
