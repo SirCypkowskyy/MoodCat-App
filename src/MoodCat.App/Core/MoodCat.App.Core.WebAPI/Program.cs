@@ -34,13 +34,13 @@ builder.Services.AddSwaggerGen(opts =>
         }
     });
 
-    opts.AddSecurityDefinition("bearer", new OpenApiSecurityScheme()
-    {
-        In = ParameterLocation.Header,
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
-        Description = "Please enter into field the word 'Bearer' following by space and JWT"
-    });
+    // opts.AddSecurityDefinition("bearer", new OpenApiSecurityScheme()
+    // {                
+    //     In = ParameterLocation.Header,
+    //     Name = "Authorization",
+    //     Type = SecuritySchemeType.ApiKey,
+    //     Description = "Please enter into field the word 'Bearer' following by space and JWT"
+    // });
 
     // opts.OperationFilter<SecurityRequirementsOperationFilter>();
 
@@ -70,6 +70,7 @@ app.MapGroup("/api/auth/")
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 

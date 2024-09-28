@@ -16,10 +16,11 @@ public class GetUsersPaginatedEndpoint : ICarterModule
     /// <inheritdoc />
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/users", async ([AsParameters] PaginationRequest request, ISender sender) =>
-            {
-                throw new NotImplementedException();
-            })
+        app.MapGet("/api/users",
+                async ([AsParameters] PaginationRequest request, ISender sender) =>
+                {
+                    throw new NotImplementedException();
+                })
             .WithName("GetUsersPaginated")
             .Produces<GetUsersResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)
