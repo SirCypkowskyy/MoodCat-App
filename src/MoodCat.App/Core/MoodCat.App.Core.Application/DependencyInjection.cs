@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using MoodCat.App.Common.BuildingBlocks.Behaviors;
+using MoodCat.App.Core.Application.Interfaces;
+using MoodCat.App.Core.Application.Services;
 
 namespace MoodCat.App.Core.Application;
 
@@ -20,7 +22,8 @@ public static class DependencyInjection
         });
 
         services.AddHttpClient();
-        
+        services.AddScoped<IWhisperService, WhisperService>();
+        services.AddScoped<IChatGptService, ChatGptService>();
         return services;
     }
 }

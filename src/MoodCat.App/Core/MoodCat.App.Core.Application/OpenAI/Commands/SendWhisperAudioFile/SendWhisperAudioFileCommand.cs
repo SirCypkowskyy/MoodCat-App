@@ -16,7 +16,6 @@ public class SendWhisperAudioFileCommandValidator : AbstractValidator<SendWhispe
     public SendWhisperAudioFileCommandValidator()
     {
         RuleFor(x => x.Request).NotNull();
-        RuleFor(x => x.Request.Model).NotNull().NotEmpty();
         RuleFor(x => x.Request.File).NotNull().NotEmpty();
     }
 }
