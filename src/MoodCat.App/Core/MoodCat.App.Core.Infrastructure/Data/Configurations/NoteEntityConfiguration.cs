@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MoodCat.App.Core.Domain.DaySummaries;
 using MoodCat.App.Core.Domain.Notes;
 using MoodCat.App.Core.Domain.Notes.ValueObjects;
 using MoodCat.App.Core.Domain.Users;
@@ -66,5 +67,10 @@ public class NoteEntityConfiguration : IEntityTypeConfiguration<NoteEntity>
         builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(c => c.AllowedNoteSupervisorId);
+        
+        // Relacja notatki do podsumowania dnia
+        builder.HasOne<DaySummaryEntity>()
+            .WithMany(e => e.Notes)
+            .HasForeignKey(x => x.DaySummaryId);
     }
 }

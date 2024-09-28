@@ -65,7 +65,7 @@ app.UseSwaggerUI();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    // await app.InitializeDatabaseAsync(app.Configuration);
+    await app.InitializeDatabaseAsync(app.Configuration);
     app.UseDeveloperExceptionPage();
 }   
 
