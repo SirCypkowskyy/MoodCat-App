@@ -13,7 +13,7 @@ using MoodCat.App.Core.Infrastructure.Data;
 namespace MoodCat.App.Core.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240928125221_Initial")]
+    [Migration("20240928154240_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

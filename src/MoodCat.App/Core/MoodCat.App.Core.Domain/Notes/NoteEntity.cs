@@ -62,6 +62,7 @@ public class NoteEntity : Aggregate<NoteId>
         
         var note = new NoteEntity
         {
+            Id = NoteId.Of(Guid.NewGuid()),
             UserId = userId,    
             Title = title,
             Content = content,
