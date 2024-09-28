@@ -6,6 +6,8 @@ namespace MoodCat.App.Core.Application.OpenAI.Commands.SendGptPrompt;
 
 public record SendGptPromptCommand(ChatGptRequestDTO Request) : ICommand<SendGptPromptResult>;
 
+/// <summary />
+/// <param name="Result"></param>
 public record SendGptPromptResult(ChatGptResultDTO Result);
 
 /// <summary>
