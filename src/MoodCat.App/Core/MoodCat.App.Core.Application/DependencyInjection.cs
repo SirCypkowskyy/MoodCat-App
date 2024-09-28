@@ -18,6 +18,8 @@ public static class DependencyInjection
             cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
+
+        services.AddHttpClient();
         
         return services;
     }
