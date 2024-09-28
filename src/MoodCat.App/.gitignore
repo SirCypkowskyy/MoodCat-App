@@ -422,3 +422,6 @@ fabric.properties
 
 # Idea folder
 .idea/
+
+# Appsettings.json
+appsettings.Production.json
