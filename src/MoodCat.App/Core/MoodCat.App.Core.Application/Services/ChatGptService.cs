@@ -10,26 +10,34 @@ using Microsoft.Extensions.Logging;
 using MoodCat.App.Common.BuildingBlocks.Abstractions.CQRS;
 using MoodCat.App.Common.BuildingBlocks.Extensions;
 using MoodCat.App.Core.Application.DTOs.OpenAI.ChatGPT;
+using MoodCat.App.Core.Application.OpenAI.Constants;
 using OpenAI.Chat;
 
 namespace MoodCat.App.Core.Application.Services;
 
 /// <summary>
-/// Provides an easy access to OpenAI ChatGPT services
+/// Provides easy access to OpenAI ChatGPT services
 /// </summary>
 public class ChatGptService(
     IConfiguration configuration,
     ILogger<SendGptPromptHandler> logger) : IChatGptService
 {
+    /// <inheritdoc />
     public async Task<ChatCompletion> GenerateResponse(SendGptPromptCommand command, CancellationToken cancellationToken)
     {
         var chatGptClient = new ChatClient(
-            model: command.Request.model,
+            model: command.Request.Model,
             configuration.GetOpenAiApiKey()
         );
         logger.LogDebug("Sending a prompt request to OpenAI");
 
-        var completion = await chatGptClient.CompleteChatAsync(command.Request.messages);
+        var messages = new List<ChatMessage>
+        { 
+            ChatMessage.CreateSystemMessage(OpenAIConstants.SystemInstruction),
+            ChatMessage.CreateSystemMessage(command.Request.Message),
+        };
+        
+        var completion = await chatGptClient.CompleteChatAsync(messages, cancellationToken: cancellationToken);
         
         logger.LogDebug("Request was successfully sent");
         
