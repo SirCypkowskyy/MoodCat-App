@@ -28,7 +28,6 @@ public class CreateGptChatCompletion : ICarterModule
     {
         app.MapPost("/api/openai/chatgpt", async (CreateGptChatCompletionRequest req, ISender sender) =>
             {
-                
                 var result = await sender.Send(new SendGptPromptCommand(req.Data));
 
                 var response = new CreateGptChatCompletionResponse(result.Result);
