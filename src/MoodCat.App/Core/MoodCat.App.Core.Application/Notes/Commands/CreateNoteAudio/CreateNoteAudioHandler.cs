@@ -17,7 +17,7 @@ public class CreateNoteAudioHandler(IApplicationDbContext dbContext) : ICommandH
         var noteContentFromAudio = await GetTextFromAudioFileUrl(request.AudioUrl);
         
         var note = NoteEntity.Create(request.UserId, NoteTitle.Of(request.NoteTitle), NoteContent.Of(noteContentFromAudio));
-        note.AddAttachment(NoteAttachment.Of($"Audio_Attachment_{note.Title}", 0, request.AudioUrl));
+        note.AddAttachment(NoteAttachment.Of($"Audio_Attachment_({note.Title.Value})", 0, request.AudioUrl));
 
         await dbContext.Notes.AddAsync(note, cancellationToken);
         
