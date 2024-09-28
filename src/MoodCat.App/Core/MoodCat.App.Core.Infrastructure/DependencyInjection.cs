@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -43,10 +44,15 @@ public static class DependencyInjection
         
         services.AddAuthorization();
         services.AddAuthentication(IdentityConstants.ApplicationScheme)
-            .AddCookie(IdentityConstants.ApplicationScheme);
+            .AddCookie(IdentityConstants.ApplicationScheme, opts =>
+            {
+                opts.Cookie.SameSite = SameSiteMode.None;
+            });
         
         // Konfiguracja Microsoft Identity
-        services.AddIdentityCore<User>()
+        services.AddIdentityCore<User>(opts =>
+            {
+            })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddApiEndpoints();
         
