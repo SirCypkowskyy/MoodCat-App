@@ -28,19 +28,11 @@ Lekarz ma dostęp do danych swoich pacjentów, na podstawie których może plano
 
 - ASP.NET Core 8.0
 - EntityFramework Core
-- Figma
-- React
-- TypeScript
 - Swagger
 - Azure
 - GitHub
 - ChatGPT
 - Whisper
-- Tailwind
-- Vite
-- Shadcn
-- Tanstack
-- Openapi-fetch
 - C#
 - FluentValidaton
 - Mapster
