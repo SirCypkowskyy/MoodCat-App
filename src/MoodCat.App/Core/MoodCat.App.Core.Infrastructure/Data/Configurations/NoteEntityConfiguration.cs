@@ -59,13 +59,12 @@ public class NoteEntityConfiguration : IEntityTypeConfiguration<NoteEntity>
         builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(c => c.UserId)
-            .OnDelete(DeleteBehavior.Cascade)
+            .HasPrincipalKey(c => c.Id)
             .IsRequired();
         
         // Relacja specjalisty do notatki 
         builder.HasOne<User>()
             .WithMany()
-            .HasForeignKey(c => c.AllowedNoteSupervisorId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .HasForeignKey(c => c.AllowedNoteSupervisorId);
     }
 }
