@@ -14,7 +14,7 @@ builder.Services
     .AddInfrastructureLayerServices(builder.Configuration)
     .AddApiLayerServices(builder.Configuration);
 
-// builder.Services.AddControllers();
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opts =>
@@ -59,7 +59,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    await app.InitializeDatabaseAsync(app.Configuration);
+    // await app.InitializeDatabaseAsync(app.Configuration);
     app.UseDeveloperExceptionPage();
 }
 

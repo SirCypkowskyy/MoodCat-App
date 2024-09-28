@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using MoodCat.App.Common.BuildingBlocks.Extensions;
 using MoodCat.App.Core.Domain.Users;
 
@@ -23,9 +24,10 @@ public static class DatabaseExtensions
         await using var scope = app.Services.CreateAsyncScope();
 
         await using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        using var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
 
         await context.Database.MigrateAsync();
-        await SeedDataAsync(context, configuration);
+        await SeedDataAsync(context, configuration, loggerFactory);
     }
 
     /// <summary>
@@ -33,8 +35,11 @@ public static class DatabaseExtensions
     /// </summary>
     /// <param name="context"></param>
     /// <param name="configuration"></param>
-    private static async Task SeedDataAsync(ApplicationDbContext context, IConfiguration configuration)
+    private static async Task SeedDataAsync(ApplicationDbContext context, IConfiguration configuration, ILoggerFactory loggerFactory)
     {
+        var logger = loggerFactory.CreateLogger("SeedData");
+        logger.LogInformation("Seeding data...");
+
         var roles = new IdentityRole[]
         {
             new()
@@ -58,6 +63,8 @@ public static class DatabaseExtensions
                 NormalizedName = "USER"
             }
         };
+
+        logger.LogInformation("Adding roles: {roles}", roles.Select(r => r.Name));
 
         await context.Roles.AddRangeAsync(roles);
 
@@ -90,6 +97,9 @@ public static class DatabaseExtensions
             PhoneNumberConfirmed = true,
             SecurityStamp = Guid.NewGuid().ToString()
         };
+        
+        logger.LogInformation("Adding specialists: {specialists}", specialist.UserName);
+        
         await context.Users.AddAsync(patient);
         await context.Users.AddAsync(specialist);
 

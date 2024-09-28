@@ -12,8 +12,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     /// <inheritdoc />
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("Users");
-
         builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(x => x.AssignedSpecialistId);
