@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MoodCat.App.Common.BuildingBlocks.Extensions;
 using MoodCat.App.Core.Domain.Users;
-using MoodCat.Core.Infrastructure.Data;
 
 namespace MoodCat.App.Core.Infrastructure.Data.Extensions;
 
