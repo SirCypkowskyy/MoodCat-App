@@ -1,7 +1,6 @@
 using MoodCat.App.Common.BuildingBlocks.Abstractions.DDD;
 using MoodCat.App.Core.Domain.Notes.Events;
 using MoodCat.App.Core.Domain.Notes.ValueObjects;
-using MoodCat.App.Core.Domain.Users.ValueObjects;
 
 namespace MoodCat.App.Core.Domain.Notes;
 
@@ -14,13 +13,13 @@ public class NoteEntity : Aggregate<NoteId>
     /// <summary>
     /// Identyfikator użytkownika, do którego należy notatka.
     /// </summary>
-    public UserId UserId { get; private set; } = default!;
+    public string UserId { get; private set; } = default!;
     
     /// <summary>
     /// Opcjonalny identyfikator użytkownika, który jest
     /// dozwolony do wyświetlania notatki jako doktor/terapeuta 
     /// </summary>
-    public UserId? AllowedNoteSupervisorId { get; private set; }
+    public string? AllowedNoteSupervisorId { get; private set; }
     
     /// <summary>
     /// Tytuł notatki.
@@ -55,7 +54,7 @@ public class NoteEntity : Aggregate<NoteId>
     /// Zawartość notatki
     /// </param>
     /// <returns></returns>
-    public static NoteEntity Create(UserId userId, NoteTitle title, NoteContent content)
+    public static NoteEntity Create(string userId, NoteTitle title, NoteContent content)
     {
         ArgumentNullException.ThrowIfNull(userId, nameof(userId));
         ArgumentNullException.ThrowIfNull(title, nameof(title));

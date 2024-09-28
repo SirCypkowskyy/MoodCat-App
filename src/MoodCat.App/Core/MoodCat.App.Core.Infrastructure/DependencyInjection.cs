@@ -40,6 +40,8 @@ public static class DependencyInjection
             options.UseSqlServer(connectionString);
             options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
         });
+
+        services.AddAuthorization();
         
         // Konfiguracja Microsoft Identity
         services.AddIdentityApiEndpoints<User>(opts =>
