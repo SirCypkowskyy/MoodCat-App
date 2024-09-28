@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -34,21 +35,36 @@ public static class DependencyInjection
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
 
+        // Konfiguracja Microsoft Identity
+        // services.AddIdentityCore<User>()
+        //     .AddEntityFrameworkStores<ApplicationDbContext>()
+        //     .AddApiEndpoints();
+
+        
+        services.AddAuthorization();
+        services.AddAuthentication(IdentityConstants.ApplicationScheme)
+            .AddCookie(IdentityConstants.ApplicationScheme);
+        
+        // Konfiguracja Microsoft Identity
+        services.AddIdentityCore<User>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddApiEndpoints();
+        
         // Konfiguracja kontekstu bazy danych SQL Server
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
             options.UseSqlServer(connectionString);
             options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
         });
-
-        services.AddAuthorization();
-        
-        // Konfiguracja Microsoft Identity
-        services.AddIdentityApiEndpoints<User>(opts =>
-        {
-            opts.User.RequireUniqueEmail = true;    
-            opts.Password.RequiredLength = 6;
-        }).AddEntityFrameworkStores<ApplicationDbContext>();
+        // services.AddIdentityApiEndpoints<User>(opts =>
+        // {
+        //     opts.User.RequireUniqueEmail = true;    
+        //     opts.Password.RequiredLength = 6;
+        //     opts.Lockout.MaxFailedAccessAttempts = 10;
+        //     opts.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+        //     opts.Lockout.AllowedForNewUsers = true;
+        //     opts.SignIn.RequireConfirmedEmail = false;
+        // }).AddEntityFrameworkStores<ApplicationDbContext>();
         
         services.AddScoped<IApplicationDbContext, ApplicationDbContext>(); 
 
