@@ -1,5 +1,7 @@
 using System.Reflection;
+using FluentValidation;
 using Microsoft.OpenApi.Models;
+using MoodCat.App.Common.BuildingBlocks.Exceptions.Handler;
 using MoodCat.App.Core.Application;
 using MoodCat.App.Core.Domain.Users;
 using MoodCat.App.Core.Infrastructure;
@@ -9,11 +11,14 @@ using MoodCat.App.Core.WebAPI;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
 builder.Services
     .AddApplicationLayerServices()
     .AddInfrastructureLayerServices(builder.Configuration)
     .AddApiLayerServices(builder.Configuration);
 
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -63,6 +68,9 @@ if (app.Environment.IsDevelopment())
     // await app.InitializeDatabaseAsync(app.Configuration);
     app.UseDeveloperExceptionPage();
 }   
+
+// Custom Exception Handling
+app.UseExceptionHandler(opts => { });
 
 // Microsoft Identity 
 app.MapGroup("/api/auth/")

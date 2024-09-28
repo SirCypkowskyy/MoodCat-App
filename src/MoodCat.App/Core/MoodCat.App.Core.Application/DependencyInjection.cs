@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using MoodCat.App.Common.BuildingBlocks.Behaviors;
 
@@ -18,6 +19,9 @@ public static class DependencyInjection
             cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
             cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
+        
+        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+        
 
         services.AddHttpClient();
         
