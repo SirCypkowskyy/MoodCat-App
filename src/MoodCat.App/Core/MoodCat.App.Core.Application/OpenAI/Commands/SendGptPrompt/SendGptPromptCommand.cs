@@ -16,7 +16,7 @@ public class SendGptPromptCommandValidator : AbstractValidator<SendGptPromptComm
     public SendGptPromptCommandValidator()
     {
         RuleFor(x => x.Request).NotNull();
-        RuleFor(x => x.Request.Model).NotNull().NotEmpty();
-        RuleFor(x => x.Request.Messages).NotNull().NotEmpty();
+        RuleFor(x => x.Request.model).NotNull().NotEmpty();
+        RuleFor(x => x.Request.messages).NotNull().NotEmpty();
     }
 }

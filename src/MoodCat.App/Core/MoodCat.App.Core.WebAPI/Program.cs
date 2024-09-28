@@ -59,9 +59,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    // await app.InitializeDatabaseAsync(app.Configuration);
+    await app.InitializeDatabaseAsync(app.Configuration);
     app.UseDeveloperExceptionPage();
-}
+}   
 
 // Microsoft Identity 
 app.MapGroup("/api/auth/")

@@ -1,5 +1,6 @@
 using Carter;
 using HealthChecks.UI.Client;
+using Mapster;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MoodCat.App.Common.BuildingBlocks.Exceptions.Handler;
 using MoodCat.App.Common.BuildingBlocks.Extensions;
@@ -16,7 +17,8 @@ public static class DependencyInjection
     /// <returns></returns>
     public static IServiceCollection AddApiLayerServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddCarter();
+        services.AddCarterWithAssemblies(typeof(Program).Assembly);
+        services.AddMapster();
 
         services.AddExceptionHandler<CustomExceptionHandler>();
         services.AddHealthChecks()

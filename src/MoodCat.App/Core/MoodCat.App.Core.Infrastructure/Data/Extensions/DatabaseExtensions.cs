@@ -24,10 +24,12 @@ public static class DatabaseExtensions
         await using var scope = app.Services.CreateAsyncScope();
 
         await using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        using var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
-
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<ApplicationDbContext>>();
+        
+        logger.LogInformation("Initializing database ...");
         await context.Database.MigrateAsync();
-        await SeedDataAsync(context, configuration, loggerFactory);
+        logger.LogInformation("Database migrated");
+        await SeedDataAsync(context, configuration, logger);
     }
 
     /// <summary>
@@ -35,10 +37,17 @@ public static class DatabaseExtensions
     /// </summary>
     /// <param name="context"></param>
     /// <param name="configuration"></param>
-    private static async Task SeedDataAsync(ApplicationDbContext context, IConfiguration configuration, ILoggerFactory loggerFactory)
+    private static async Task SeedDataAsync(ApplicationDbContext context, IConfiguration configuration, ILogger logger)
     {
-        var logger = loggerFactory.CreateLogger("SeedData");
         logger.LogInformation("Seeding data...");
+
+        if (await context.Users.AnyAsync())
+        {
+            logger.LogWarning("User already exists, skipping seeding");
+            return;
+        }
+
+        await using var transaction = await context.Database.BeginTransactionAsync();
 
         var roles = new IdentityRole[]
         {
@@ -108,7 +117,7 @@ public static class DatabaseExtensions
         await context.UserRoles.AddRangeAsync(new[]
         {
             new IdentityUserRole<string>()
-            {
+            {                       
                 RoleId = roles[2].Id,
                 UserId = specialist.Id
             },
@@ -120,5 +129,11 @@ public static class DatabaseExtensions
         });
         
         await context.SaveChangesAsync();
+        
+        patient.AssignedSpecialistId = specialist.Id;
+        
+        await context.SaveChangesAsync();
+        
+        await transaction.CommitAsync();
     }
 }
