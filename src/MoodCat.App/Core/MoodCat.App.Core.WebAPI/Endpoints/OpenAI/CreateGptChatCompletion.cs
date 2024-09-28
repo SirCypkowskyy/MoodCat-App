@@ -34,7 +34,7 @@ public class CreateGptChatCompletion : ICarterModule
 
                 return Results.Ok(response);
             }).WithName("CreateGptChatCompletion")
-            .RequireAuthorization()
+            .RequireAuthorization("CanUseApi")
             .Produces<CreateGptChatCompletionResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)
             .WithSummary("Wygeneruj request do chatgpt")

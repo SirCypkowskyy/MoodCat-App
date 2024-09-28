@@ -42,7 +42,14 @@ public static class DependencyInjection
         //     .AddApiEndpoints();
 
         
-        services.AddAuthorization();
+        services.AddAuthorization(opts =>
+        {
+            opts.AddPolicy("CanUseApi", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+            });
+        });
+        
         services.AddAuthentication(IdentityConstants.ApplicationScheme)
             .AddCookie(IdentityConstants.ApplicationScheme, opts =>
             {
