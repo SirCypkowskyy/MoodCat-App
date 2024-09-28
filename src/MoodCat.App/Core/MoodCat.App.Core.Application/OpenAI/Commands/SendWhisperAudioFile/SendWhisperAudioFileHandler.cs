@@ -31,8 +31,7 @@ public class SendWhisperAudioFileHandler(
             model: "whisper-1",
             configuraiton.GetOpenAiApiKey());
 
-        var audioFilePath =
-            "https://hycatsprod.blob.core.windows.net/moodcats-storage//723f1390-0900-4f2c-813d-f1d4698d9c8f.mp3";
+        var audioFilePath = "";
         byte[] audiofileBytes;
         var httpClient = new HttpClient();
         using (HttpResponseMessage response = await httpClient.GetAsync(audioFilePath))
@@ -48,7 +47,7 @@ public class SendWhisperAudioFileHandler(
 
         using (MemoryStream stream = new MemoryStream(audiofileBytes))
         {
-            var transcription = await whisperClient.TranscribeAudioAsync(stream, "test.mp3", options: audioTranscriptionOptions);
+            var transcription = await whisperClient.TranscribeAudioAsync(stream, "transcribe.mp3", options: audioTranscriptionOptions);
 
 
             logger.LogInformation("Sending whisper request.");
