@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace MoodCat.App.Common.BuildingBlocks.Extensions;
 
