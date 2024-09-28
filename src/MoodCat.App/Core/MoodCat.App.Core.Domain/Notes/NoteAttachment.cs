@@ -52,11 +52,12 @@ public class NoteAttachment : Entity<NoteAttachmentId>
     /// <param name="size">
     /// Rozmiar załącznika.
     /// </param>
-    /// <param name="resourceUrl">
+    /// <param name="resourceUrl">          
     /// URL zasobu załącznika.
     /// </param>
     private NoteAttachment(string name, long size, string resourceUrl)
     {
+        Id = NoteAttachmentId.Of(Guid.NewGuid());
         Name = name;
         Size = size;
         ResourceUrl = resourceUrl;

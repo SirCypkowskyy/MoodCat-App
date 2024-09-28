@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Carter;
 using MediatR;
 using MoodCat.App.Core.Application.DTOs.Notes;
+using MoodCat.App.Core.Application.Notes.Commands.CreateNoteAudio;
 using MoodCat.App.Core.Application.Notes.Commands.CreateNoteText;
 
 namespace MoodCat.App.Core.WebAPI.Endpoints.Notes;
@@ -20,7 +21,7 @@ public record CreateNoteTextRequest(CreateNoteTextRequestDTO RequestData);
 /// <param name="AudioUrl">
 /// Url do pliku audio, który ma zostać użyty do stworzenia notatki
 /// </param>
-public record CreateNoteAudioRequest(string AudioUrl);
+public record CreateNoteAudioRequest(string NoteTitle, string AudioUrl);
 
 /// <summary>
 /// Odpowiedź na żądanie
@@ -51,6 +52,22 @@ public class CreateNoteEndpoint : ICarterModule
             .Produces<CreateNoteResponse>()
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .WithSummary("Create Note with Text")
+            .WithTags("Notes");
+
+        app.MapPost("/api/notes/create-audio",
+                async (CreateNoteAudioRequest req, ISender sender, ClaimsPrincipal claims) =>
+                {
+                    var userId = claims.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+                    var result = await sender.Send(new CreateNoteAudioCommand(req.NoteTitle, req.AudioUrl, userId));
+
+                    return new CreateNoteResponse(result.ResponseDataDTO);
+                })
+            .RequireAuthorization()
+            .WithName("Create Note Audio")
+            .Produces<CreateNoteResponse>()
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .WithSummary("Create Note with Audio Url")
             .WithTags("Notes");
     }
 }
