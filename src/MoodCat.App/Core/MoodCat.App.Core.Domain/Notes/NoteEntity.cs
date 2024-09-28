@@ -107,6 +107,16 @@ public class NoteEntity : Aggregate<NoteId>
         
         AddDomainEvent(new NoteUpdatedDomainEvent(this));
     }
+
+    /// <summary>
+    /// Ustawia suprevisora notatki
+    /// </summary>
+    /// <param name="userId"></param>
+    public void SetAllowedNoteSupervisorId(string userId)
+    {
+        ArgumentNullException.ThrowIfNull(userId, nameof(userId));
+        AllowedNoteSupervisorId = userId;
+    }
     
     /// <summary>
     /// Dodaje załącznik do notatki.

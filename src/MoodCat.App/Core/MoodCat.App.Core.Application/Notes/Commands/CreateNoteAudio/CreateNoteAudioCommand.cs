@@ -15,10 +15,15 @@ namespace MoodCat.App.Core.Application.Notes.Commands.CreateNoteAudio;
 /// <param name="UserId">
 /// Id użytkownika
 /// </param>
+/// <param name="HappinessScore">
+/// Poziom zadowolenia 
+/// </param>
 public record CreateNoteAudioCommand(
     string NoteTitle,
     string AudioUrl,
-    string UserId
+    string UserId,
+    int HappinessScore,
+    string? ProvidedQuestion
 ) : ICommand<CreateNoteAudioResult>;
 
 /// <summary>

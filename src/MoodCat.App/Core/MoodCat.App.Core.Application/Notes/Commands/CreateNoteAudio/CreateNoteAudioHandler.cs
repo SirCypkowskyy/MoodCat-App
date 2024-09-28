@@ -16,20 +16,43 @@ public class CreateNoteAudioHandler(IApplicationDbContext dbContext, IWhisperSer
     : ICommandHandler<CreateNoteAudioCommand, CreateNoteAudioResult>
 {
     /// <inheritdoc />
-    public async Task<CreateNoteAudioResult> Handle(CreateNoteAudioCommand request, CancellationToken cancellationToken)
+    public async Task<CreateNoteAudioResult> Handle(CreateNoteAudioCommand command, CancellationToken cancellationToken)
     {
-        var noteContentFromAudio = await GetTextFromAudioFileUrl(request.AudioUrl, cancellationToken);
+        var noteContentFromAudio = await GetTextFromAudioFileUrl(command.AudioUrl, cancellationToken);
 
-        var note = NoteEntity.Create(request.UserId, NoteTitle.Of(request.NoteTitle),
-            NoteContent.Of(noteContentFromAudio), null);
-        note.AddAttachment(NoteAttachment.Of($"Audio_Attachment_({note.Title.Value})", 0, request.AudioUrl));
+        string noteContent;
+
+        if (!string.IsNullOrWhiteSpace(command.ProvidedQuestion))
+            noteContent = "Question: " + command.ProvidedQuestion + "\n\n" + "Answer: " + noteContentFromAudio;
+        else
+            noteContent = noteContentFromAudio;
+
+        var note = NoteEntity.Create(
+            command.UserId,
+            NoteTitle.Of(command.NoteTitle),
+            NoteContent.Of(noteContent),
+            command.HappinessScore
+        );
+        
+        var usr = (await dbContext.Users.FindAsync(new object?[] {command.UserId}, cancellationToken))!;
+        
+        if(usr.AssignedSpecialistId != null)
+            note.SetAllowedNoteSupervisorId(usr.AssignedSpecialistId);
+
+        var datetime = DateTime.Now;
+        note.AddAttachment(NoteAttachment.Of($"Audio_Attachment_({note.Title.Value})_{datetime}", 0, command.AudioUrl));
 
         await dbContext.Notes.AddAsync(note, cancellationToken);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return new CreateNoteAudioResult(new CreateNoteResponseDTO(note.Id.Value.ToString(), note.Title.Value,
-            note.Content.Value.ToString()));
+        return new CreateNoteAudioResult(
+            new CreateNoteResponseDTO(
+                note.Id.Value.ToString(),
+                note.Title.Value,
+                note.Content.Value.ToString()
+            )
+        );
     }
 
     private async Task<string> GetTextFromAudioFileUrl(string requestAudioUrl, CancellationToken cancellationToken)

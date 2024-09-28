@@ -17,19 +17,33 @@ public class CreateNoteTextHandler(IApplicationDbContext dbContext, ILogger<Crea
     public async Task<CreateNoteTextResult> Handle(CreateNoteTextCommand command, CancellationToken cancellationToken)
     {
         // Sprawdź, czy użytkownik z wybranym kluczem istnieje
-        if(!dbContext.Users.Any(x => x.Id == command.UserId))
+        if (!dbContext.Users.Any(x => x.Id == command.UserId))
             throw new ArgumentException("Nie znaleziono użytkownika z takim ID!");
-        
+
+        string noteContent;
+
+        if (!string.IsNullOrWhiteSpace(command.RequestDataDTO.Meta.ProvidedQuestion))
+            noteContent = "Question: " + command.RequestDataDTO.Meta.ProvidedQuestion + "\n\n" + "Answer: " +
+                          command.RequestDataDTO.Text;
+        else
+            noteContent = command.RequestDataDTO.Text ?? "No note content";
+
         var note = NoteEntity.Create(
-            command.UserId,                                                                                                 
+            command.UserId,
             NoteTitle.Of(command.RequestDataDTO.Title),
-            NoteContent.Of(command.RequestDataDTO.Body),
-            command.RequestDataDTO.HappinessLevel
+            NoteContent.Of(noteContent),
+            command.RequestDataDTO.Meta.HappinessLevel
         );
-        
+
+        var usr = (await dbContext.Users.FindAsync(new object?[] { command.UserId }, cancellationToken))!;
+
+        if (usr.AssignedSpecialistId != null)
+            note.SetAllowedNoteSupervisorId(usr.AssignedSpecialistId);
+
         await dbContext.Notes.AddAsync(note, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return new CreateNoteTextResult(new CreateNoteResponseDTO(note.Id.Value.ToString(), note.Title.Value, note.Content.Value));
+        return new CreateNoteTextResult(new CreateNoteResponseDTO(note.Id.Value.ToString(), note.Title.Value,
+            note.Content.Value));
     }
 }

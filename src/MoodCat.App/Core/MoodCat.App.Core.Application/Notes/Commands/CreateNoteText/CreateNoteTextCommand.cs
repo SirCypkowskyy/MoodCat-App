@@ -12,7 +12,7 @@ namespace MoodCat.App.Core.Application.Notes.Commands.CreateNoteText;
 /// <param name="UserId">
 /// Id użytkownika, którego ma być notatka
 /// </param>
-public record CreateNoteTextCommand(CreateNoteTextRequestDTO RequestDataDTO, string UserId) : ICommand<CreateNoteTextResult>;
+public record CreateNoteTextCommand(CreateNoteRequestDTO RequestDataDTO, string UserId) : ICommand<CreateNoteTextResult>;
 
 /// <summary>
 /// Rezultat stworzenia notatki
