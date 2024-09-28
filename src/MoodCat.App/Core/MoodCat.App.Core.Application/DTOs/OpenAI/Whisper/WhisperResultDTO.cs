@@ -7,7 +7,7 @@ namespace MoodCat.App.Core.Application.DTOs.OpenAI.Whisper;
 /// <param name="Object"></param>
 /// <param name="Created"></param>
 /// <param name="Model"></param>
-public class WhisperResultDTO(
+public record WhisperResultDTO(
     string Id, 
     string Object, 
     string Created, 

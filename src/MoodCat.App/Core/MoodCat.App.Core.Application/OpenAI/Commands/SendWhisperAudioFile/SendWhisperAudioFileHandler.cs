@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MoodCat.App.Common.BuildingBlocks.Abstractions.CQRS;
@@ -30,19 +31,33 @@ public class SendWhisperAudioFileHandler(
             model: "whisper-1",
             configuraiton.GetOpenAiApiKey());
 
-        var audioFilePath = "...";
+        var audioFilePath =
+            "https://hycatsprod.blob.core.windows.net/moodcats-storage//723f1390-0900-4f2c-813d-f1d4698d9c8f.mp3";
+        byte[] audiofileBytes;
+        var httpClient = new HttpClient();
+        using (HttpResponseMessage response = await httpClient.GetAsync(audioFilePath))
+        {
+            response.EnsureSuccessStatusCode();
+            audiofileBytes = await response.Content.ReadAsByteArrayAsync();
+        }
+
         var audioTranscriptionOptions = new AudioTranscriptionOptions()
         {
             ResponseFormat = AudioTranscriptionFormat.Text,
-            TimestampGranularities = AudioTimestampGranularities.Word | AudioTimestampGranularities.Segment
         };
 
-        logger.LogInformation("Sending whisper request.");
-        var transcription = await whisperClient.TranscribeAudioAsync(audioFilePath, audioTranscriptionOptions);
-        logger.LogInformation($"Transcripted result: {transcription.Value.Text}");
+        using (MemoryStream stream = new MemoryStream(audiofileBytes))
+        {
+            var transcription = await whisperClient.TranscribeAudioAsync(stream, "test.mp3", options: audioTranscriptionOptions);
 
-        var whisperResponse = new WhisperResultDTO("", "", "", "whisper-1", transcription.Value.Text);
 
-        return new SendWhisperAudioFileResult(whisperResponse);
+            logger.LogInformation("Sending whisper request.");
+
+            logger.LogInformation($"Transcripted result: {transcription.Value.Text}");
+
+            var whisperResponse = new WhisperResultDTO("", "", "", "whisper-1", transcription.Value.Text);
+
+            return new SendWhisperAudioFileResult(whisperResponse);
+        }
     }
 }

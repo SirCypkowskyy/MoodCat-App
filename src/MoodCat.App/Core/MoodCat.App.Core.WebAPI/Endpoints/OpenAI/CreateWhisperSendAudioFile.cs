@@ -25,11 +25,15 @@ public class CreateWhisperSendAudioFile : ICarterModule
     /// <inheritdoc />
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/openai/whisper", async (CreateWhisperSendAudioFileRequest req, ISender sender) =>
+        app.MapPost("/api/openai/whisper", async (CreateWhisperSendAudioFileRequest req, ISender sender,ILogger<CreateWhisperSendAudioFile> logger) =>
             {
                 var result = await sender.Send(new SendWhisperAudioFileCommand(req.Data));
+                
+                logger.LogInformation(result.Result.Result);
 
                 var response = new CreateWhisperSendAudioFileResponse(result.Result);
+                
+                
 
                 return Results.Ok(response);
             }).WithName("CreateWhisperSendAudioFile")
