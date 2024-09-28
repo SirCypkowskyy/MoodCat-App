@@ -32,6 +32,6 @@ public record CreateNoteRequestDTO(
 /// Poziom zadowolenia z dnia (w skali 1-5)
 /// </param>
 public record CreateNoteMetaDTO(
-    string? ProvidedQuestion,
-    int HappinessLevel
+    int HappinessLevel,
+    string? ProvidedQuestion
 );

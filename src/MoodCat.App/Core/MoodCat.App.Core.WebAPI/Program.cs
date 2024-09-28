@@ -70,7 +70,7 @@ if (app.Environment.IsDevelopment())
 }   
 
 // Custom Exception Handling
-app.UseExceptionHandler(opts => { });
+// app.UseExceptionHandler(opts => { });
 
 // Microsoft Identity 
 app.MapGroup("/api/auth/")
