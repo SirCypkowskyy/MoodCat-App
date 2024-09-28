@@ -53,12 +53,13 @@ var app = builder.Build();
 
 app.UseApiLayerServices();
 
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-
     await app.InitializeDatabaseAsync(app.Configuration);
     app.UseDeveloperExceptionPage();
 }   
