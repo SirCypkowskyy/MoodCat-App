@@ -47,6 +47,7 @@ public static class DependencyInjection
             .AddCookie(IdentityConstants.ApplicationScheme, opts =>
             {
                 opts.Cookie.SameSite = SameSiteMode.None;
+                // opts.Cookie.SecurePolicy = CookieSecurePolicy.None;
             });
         
         // Konfiguracja Microsoft Identity
