@@ -2,7 +2,7 @@ using FluentValidation;
 using MoodCat.App.Common.BuildingBlocks.Abstractions.CQRS;
 using MoodCat.App.Core.Application.DTOs.OpenAI.Whisper;
 
-namespace MoodCat.App.Core.Application.OpenAI.Commands.SendGptAudioFile;
+namespace MoodCat.App.Core.Application.OpenAI.Commands.SendWhisperAudioFile;
 
 public record SendWhisperAudioFileCommand(WhisperRequestDTO Request) : ICommand<SendWhisperAudioFileResult>;
 

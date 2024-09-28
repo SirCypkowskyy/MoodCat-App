@@ -1,4 +1,4 @@
-﻿using MoodCat.App.Core.Application.OpenAI.Commands.SendGptAudioFile;
+﻿using MoodCat.App.Core.Application.OpenAI.Commands.SendWhisperAudioFile;
 using OpenAI.Audio;
 
 namespace MoodCat.App.Core.Application.Interfaces;

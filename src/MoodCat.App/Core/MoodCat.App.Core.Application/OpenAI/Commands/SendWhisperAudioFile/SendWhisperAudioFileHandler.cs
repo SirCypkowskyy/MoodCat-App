@@ -5,7 +5,6 @@ using MoodCat.App.Common.BuildingBlocks.Abstractions.CQRS;
 using MoodCat.App.Common.BuildingBlocks.Extensions;
 using MoodCat.App.Core.Application.DTOs.OpenAI.Whisper;
 using MoodCat.App.Core.Application.Interfaces;
-using MoodCat.App.Core.Application.OpenAI.Commands.SendGptAudioFile;
 using OpenAI.Audio;
 namespace MoodCat.App.Core.Application.OpenAI.Commands.SendWhisperAudioFile;
 
