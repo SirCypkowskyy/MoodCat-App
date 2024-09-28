@@ -9,9 +9,7 @@
 
     <ItemGroup>
       <Folder Include="Notes\EventHandlers\" />
-      <Folder Include="Notes\Queries\" />
       <Folder Include="OpenAI\EventHandlers\" />
-      <Folder Include="OpenAI\Queries\" />
       <Folder Include="Users\Commands\" />
       <Folder Include="Users\EventHandlers\" />
       <Folder Include="Users\Queries\" />
