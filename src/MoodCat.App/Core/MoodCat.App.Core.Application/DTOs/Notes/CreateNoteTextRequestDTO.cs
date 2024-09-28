@@ -9,7 +9,11 @@ namespace MoodCat.App.Core.Application.DTOs.Notes;
 /// <param name="Body">
 /// Ciało notatki
 /// </param>
+/// <param name="HappinessLevel">
+/// Poziom zadowolenia z dnia
+/// </param>
 public record CreateNoteTextRequestDTO(
     string Title,
-    string Body
+    string Body,
+    int HappinessLevel
 );

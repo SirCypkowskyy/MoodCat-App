@@ -1,4 +1,5 @@
 using MoodCat.App.Common.BuildingBlocks.Abstractions.DDD;
+using MoodCat.App.Core.Domain.DaySummaries;
 using MoodCat.App.Core.Domain.Notes.Events;
 using MoodCat.App.Core.Domain.Notes.ValueObjects;
 
@@ -40,6 +41,16 @@ public class NoteEntity : Aggregate<NoteId>
     /// Załączniki notatki.
     /// </summary>
     public IReadOnlyList<NoteAttachment> Attachments => _attachments.AsReadOnly();
+    
+    /// <summary>
+    /// Klucz opcy opcjonalnego podsumowania dnia, do którego notatka należy 
+    /// </summary>
+    public Guid? DaySummaryId { get; private set; }
+    
+    /// <summary>
+    /// Poziom zadowolenia z dnia
+    /// </summary>
+    public double? Happiness { get; private set; }
 
     /// <summary>
     /// Tworzy nową notatkę.
@@ -53,8 +64,11 @@ public class NoteEntity : Aggregate<NoteId>
     /// <param name="content">
     /// Zawartość notatki
     /// </param>
+    /// <param name="happinessLevel">
+    /// (opcjonalny) Poziom zadowolenia z dnia
+    /// </param>
     /// <returns></returns>
-    public static NoteEntity Create(string userId, NoteTitle title, NoteContent content)
+    public static NoteEntity Create(string userId, NoteTitle title, NoteContent content, int? happinessLevel)
     {
         ArgumentNullException.ThrowIfNull(userId, nameof(userId));
         ArgumentNullException.ThrowIfNull(title, nameof(title));
@@ -66,6 +80,7 @@ public class NoteEntity : Aggregate<NoteId>
             UserId = userId,    
             Title = title,
             Content = content,
+            Happiness = happinessLevel
         };
         
         note.AddDomainEvent(new NoteCreatedDomainEvent(note));

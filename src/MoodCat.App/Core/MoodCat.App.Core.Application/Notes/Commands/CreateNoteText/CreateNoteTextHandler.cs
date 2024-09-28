@@ -23,7 +23,8 @@ public class CreateNoteTextHandler(IApplicationDbContext dbContext, ILogger<Crea
         var note = NoteEntity.Create(
             command.UserId,                                                                                                 
             NoteTitle.Of(command.RequestDataDTO.Title),
-            NoteContent.Of(command.RequestDataDTO.Body)
+            NoteContent.Of(command.RequestDataDTO.Body),
+            command.RequestDataDTO.HappinessLevel
         );
         
         await dbContext.Notes.AddAsync(note, cancellationToken);
