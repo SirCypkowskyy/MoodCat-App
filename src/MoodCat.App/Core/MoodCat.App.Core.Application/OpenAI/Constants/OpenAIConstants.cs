@@ -17,7 +17,7 @@ public sealed class OpenAIConstants
                                                        If the input language is Polish than the output language must be Polish
                                                        Otherwise output language must be English.
                                                        
-                                                           "Content": (string) A summarized version of the entire collection, capturing key elements and overall sentiment. (Required)
+                                                           "Content": (string) A summarized version of the entire collection, capturing key elements and overall sentiment. (ALWAYS Required, and always the longest. Try to summarize all data)
                                                            Optional keys should only be included if relevant information is detected in the reports:
                                                                "PatientGeneralFunctioning": (string) Insights on the patient's general day-to-day functioning and emotional state.
                                                                "Interests": (string) Information regarding the patient's hobbies, activities, or topics of interest.

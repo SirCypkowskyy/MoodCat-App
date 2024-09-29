@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MoodCat.App.Core.Domain.DaySummaries;
 using MoodCat.App.Core.Domain.Notes;
 using MoodCat.App.Core.Domain.Users;
 
@@ -20,6 +21,11 @@ public interface IApplicationDbContext
     /// Załączniki do notatek
     /// </summary>
     DbSet<NoteAttachment> NoteAttachments { get; }
+    
+    /// <summary>
+    /// Podsumowania dni
+    /// </summary>
+    DbSet<DaySummaryEntity> DaysSummaries { get; }
     
     /// <summary>
     /// Zapisuje zmiany w kontekście bazy danych

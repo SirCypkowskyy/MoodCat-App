@@ -298,4 +298,79 @@ public class DaySummaryEntity : Aggregate<Guid>
     
     public void UpdateOther(string other)
      => Other = other;
+
+    public void UpdateUserId(string userId) => UserId = userId;
+
+    /// <summary>
+    /// Spróbuje zakutalizować jak najwięcej pól ze słownikiem
+    /// </summary>
+    /// <param name="dict"></param>
+    /// <exception cref="NotImplementedException"></exception>
+    public void TryToUpdateWithDict(Dictionary<string,string> dict)
+    {
+        if (dict.TryGetValue("Content", out var content))
+        {
+            Content = content;
+            OriginalContent = content;
+        }
+        else
+        {
+            Content = "No content was generated";
+            OriginalContent = "No content was generated";
+        }
+
+        if (dict.TryGetValue("PatientGeneralFunctioning", out var patientGeneralFunctioning))
+        {
+            PatientGeneralFunctioning = patientGeneralFunctioning;
+            OriginalPatientGeneralFunctioning = patientGeneralFunctioning;
+        }
+
+        if (dict.TryGetValue("Interests", out var interests))
+        {
+            Interests = interests;
+            OriginalInterests = interests;
+        }
+
+        if (dict.TryGetValue("SocialRelationships", out var socialRelationships))
+        {
+            SocialRelationships = socialRelationships;
+            OriginalSocialRelationships = socialRelationships;
+        }
+
+        if (dict.TryGetValue("Work", out var work))
+        {
+            Work = work;
+            OriginalWork = work;
+        }
+
+        if (dict.TryGetValue("Family", out var family))
+        {
+            Family = family;
+            OriginalFamily = family;
+        }
+
+        if (dict.TryGetValue("PhysicalHealth", out var physicalHealth))
+        {
+            PhysicalHealth = physicalHealth;
+            OriginalPhysicalHealth = physicalHealth;
+        }
+
+        if (dict.TryGetValue("Memories", out var memories))
+        {
+            Memories = memories;
+            OriginalMemories = memories;
+        }
+
+        if (dict.TryGetValue("ReportedProblems", out var reportedProblems))
+        {
+            ReportedProblems = reportedProblems;
+            OriginalReportedProblems = reportedProblems;
+        }
+
+        if (dict.TryGetValue("Other", out var other))
+        {
+            Other = other;
+            OriginalOther = other;
+        }
+    }
 }

@@ -143,4 +143,10 @@ public class NoteEntity : Aggregate<NoteId>
         
         _attachments.Remove(attachment);
     }
+
+    public void UpdateDaySummaryId(Guid? daySummaryId)
+    {
+        ArgumentNullException.ThrowIfNull(daySummaryId, nameof(daySummaryId));
+        DaySummaryId = daySummaryId;
+    }
 }

@@ -41,4 +41,14 @@ public static class ConfigurationExtensions
     {
         return configuration["OpenAi:ApiKey"]!;
     }
+
+    /// <summary>
+    /// Zwraca model GPT, używany przez aplikację
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
+    public static string GetOpenAiGptModel(this IConfiguration configuration)
+    {
+        return configuration["OpenAi:GptModel"]!;
+    }
 }
