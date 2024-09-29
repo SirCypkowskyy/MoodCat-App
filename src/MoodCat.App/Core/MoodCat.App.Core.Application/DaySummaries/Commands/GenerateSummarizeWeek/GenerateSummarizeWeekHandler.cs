@@ -31,14 +31,16 @@ public partial class GenerateSummarizeWeekHandler(
     {
         // Znajdujemy ostatnią niedzielę
         var today = DateTime.Now;
-        var lastSunday = today.AddDays(-(int)today.DayOfWeek); // ostatnia niedziela (włącznie z dzisiaj, jeśli to niedziela)
-        var lastMonday = lastSunday.AddDays(-6); // ostatni poniedziałek
+        
+        var last7Days = today.AddDays(-7);
+        // var lastSunday = today.AddDays(-(int)today.DayOfWeek); // ostatnia niedziela (włącznie z dzisiaj, jeśli to niedziela)
+        // var lastMonday = lastSunday.AddDays(-6); // ostatni poniedziałek
 
         // Sprawdzamy, czy istnieje już podsumowanie dla tego tygodnia
         var existingSummaryForTheWeek = await dbContext.DaysSummaries
             .FirstOrDefaultAsync(x =>
-                    x.SummaryDate >= DateOnly.FromDateTime(lastMonday) && 
-                    x.SummaryDate <= DateOnly.FromDateTime(lastSunday) && 
+                    x.SummaryDate >= DateOnly.FromDateTime(last7Days) && 
+                    // x.SummaryDate <= DateOnly.FromDateTime(lastSunday) && 
                     x.UserId == command.UserId,
                 cancellationToken: cancellationToken);
 
@@ -76,8 +78,10 @@ public partial class GenerateSummarizeWeekHandler(
         var properNotes = await dbContext.Notes
             .Where(x => x.UserId == command.UserId && 
                         x.CreatedAt.HasValue && 
-                        x.CreatedAt.Value.Date >= lastMonday.Date && 
-                        x.CreatedAt.Value.Date <= lastSunday.Date)
+                        x.CreatedAt.Value.Date >= last7Days
+                        //x.CreatedAt.Value.Date >= lastMonday.Date && 
+                       // x.CreatedAt.Value.Date <= lastSunday.Date
+                       )
             .ToListAsync(cancellationToken: cancellationToken);
 
         // Jeśli nie ma żadnych notatek, wyrzuć wyjątek
