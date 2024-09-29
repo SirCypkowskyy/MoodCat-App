@@ -29,8 +29,4 @@
       <ProjectReference Include="..\MoodCat.App.Core.Infrastructure\MoodCat.App.Core.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Endpoints\Questions\GetQuestions\" />
-    </ItemGroup>
-
 </Project>
