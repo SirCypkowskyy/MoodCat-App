@@ -17,7 +17,8 @@ public static class ConfigurationExtensions
     {
         try
         {
-            return configuration.GetConnectionString("AppDbConnection")!;
+            return configuration["ConnectionStrings:AppDbConnection"] 
+                   ?? throw new NullReferenceException("Nie znaleziono ConnectionString w appsettingsach!");
         }
         catch (Exception e)
         {
