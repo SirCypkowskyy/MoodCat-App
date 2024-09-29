@@ -39,7 +39,7 @@ public partial class GenerateSummarizeDayHandler(
 
         if (summaryForTheDayExists && command.ForceRefresh != true)
             return new GenerateSummarizeDayResult(
-                new DaySummarizeResultDTO(
+                new SummarizeResultDTO(
                     command.UserId,
                     existingSummaryForTheDay.Content,
                     existingSummaryForTheDay.OriginalContent,
@@ -141,7 +141,7 @@ public partial class GenerateSummarizeDayHandler(
         if (deserializedDaySummary is not null)
         {
             return new GenerateSummarizeDayResult(
-                new DaySummarizeResultDTO(
+                new SummarizeResultDTO(
                     command.UserId,
                     deserializedDaySummary.Content,
                     deserializedDaySummary.OriginalContent,
@@ -169,7 +169,7 @@ public partial class GenerateSummarizeDayHandler(
         }
 
         return new GenerateSummarizeDayResult(
-            new DaySummarizeResultDTO(
+            new SummarizeResultDTO(
                 command.UserId,
                 existingSummaryForTheDay.Content,
                 existingSummaryForTheDay.OriginalContent,

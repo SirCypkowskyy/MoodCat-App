@@ -20,4 +20,4 @@ public record GenerateSummarizeDayCommand(string UserId, bool ForceRefresh) : IC
 /// <param name="Data">
 /// Wygenerowane dane
 /// </param>
-public record GenerateSummarizeDayResult(DaySummarizeResultDTO Data);
+public record GenerateSummarizeDayResult(SummarizeResultDTO Data);

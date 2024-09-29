@@ -21,10 +21,9 @@ public class CreateWeekSummaryEndpoint : ICarterModule
                     if (userId is null)
                         throw new ApplicationException("User ID cannot be null.");
 
-                    throw new NotImplementedException();
-                    // var result = await sender.Send(new GenerateSummarizeDayCommand(userId, Request.ForceRefresh));
+                    var result = await sender.Send(new GenerateSummarizeDayCommand(userId, Request.ForceRefresh));
 
-                    // return result;
+                    return result;
                 }).WithName("GenerateSummarizeWeekSummaryEndpoint")
             .WithSummary("Generates AI week summary from user notes")
             .WithDescription("Generates a summary of a specific week from user's notes utilising OpenAI's ChatGPT.")

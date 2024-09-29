@@ -69,7 +69,7 @@ namespace MoodCat.App.Core.Application.DTOs.DaySummaries;
 /// <param name="OriginalOther">
 /// OPCJONALNY, inne informacje, nie poruszane w innych kategoriach  (niezmodyfikowany przez użytkownika) 
 /// </param>
-public record DaySummarizeResultDTO(
+public record SummarizeResultDTO(   
     string UserId,
     string Content,
     string OriginalContent,
