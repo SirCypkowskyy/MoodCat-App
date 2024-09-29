@@ -20,21 +20,35 @@ Lekarz ma dostęp do danych swoich pacjentów, na podstawie których może plano
 ## Architektura
 
 - DDD (Domain-Driven Design)
-- CQRS (Command-query Separation
+- CQRS (Command and Query Responsibility Segregation)
 - SoC (Separation of Concerns)
 - Monolit
 
 ## Dobór Technologii
 
+**Środowisko**:
 - ASP.NET Core 8.0
+- C#
+
+
+**ORM**:
 - EntityFramework Core
+
+**Api-Explorer**:
 - Swagger
+- Swashbuckle
+
+**CI/CD**:
 - Azure
 - GitHub
-- ChatGPT
-- Whisper
-- C#
-- FluentValidaton
-- Mapster
-- Microsoft Identity
-- Swashbuckle
+
+**Zewnętrzne serwisy-usługi**:
+- OpenAI ChatGPT
+- OpenAI Whisper
+
+**Paczki Nuget**:
+- FluentValidaton - walidacja 
+- Carter - Lepsza obsługa minimal API
+- Mapster - konwersja obiektów DTO na modele i vice versa
+- Microsoft Identity - autoscaffoldowana autoryzacja i autentykacja
+
