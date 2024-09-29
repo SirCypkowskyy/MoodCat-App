@@ -7,9 +7,9 @@ namespace MoodCat.App.Core.Application.OpenAI.Constants;
 public sealed class OpenAIConstants
 {
     /// <summary>
-    /// Domyślne instrukcje systemowe dla ChatGPT
+    /// Domyślne instrukcje systemowe dla ChatGPT (przy generowaniu podsumowania dnia)
     /// </summary>
-    public static string SystemInstruction { get; } = """
+    public static string SystemInstructionsForGeneratingSummary { get; } = """
                                                        You are an expert in summarizing collections of short reports. You will receive a single string containing multiple short reports, each separated by a newline character (\n). Your task is to generate a comprehensive summary that captures the core ideas of all reports.
 
                                                        Your output should be a JSON object with the following structure:
@@ -50,4 +50,40 @@ public sealed class OpenAIConstants
                                                            "Other": "The patient finds that taking walks helps alleviate stress, although anxiety about work remains."
                                                        }
                                                        """;
+
+    public static string SystemInstructionsForGeneratingQuestionForUser { get; } = """
+        You are responsible for generating a question for the user that will help them create a note about their day. The question should be tailored to the given topic and tags and must be in the user's preferred language.
+        
+        Topics:
+        - "Content": The question should encourage the user to summarize their overall day, including events and their emotional state, based on the notes they have written and their recorded HappinessLevels.
+        - "PatientGeneralFunctioning": Ask about the user's general emotional state and how they handled their daily responsibilities.
+        - "Interests": Prompt the user to reflect on any new interests, changes in hobbies, or things they enjoyed today.
+        - "SocialRelationships": Inquire about the user's relationships, whether they formed new friendships, experienced changes in romantic relationships, or had conflicts with others.
+        - "Work": Ask the user to describe any changes or challenges in their professional life.
+        - "Family": Encourage reflection on family events or changes in family dynamics.
+        - "PhysicalHealth": Ask about the user’s physical health, including any new health issues, improvements, or ongoing symptoms.
+        - "Memories": Prompt the user to think about any memories they reflected on during the day and how they felt about them.
+        - "ReportedProblems": Ask the user to detail any problems they faced today, new challenges, or solutions to ongoing issues.
+        - "Other": For any other topic, ask about something significant that happened which does not fit into the other categories.
+        
+        Ensure that the question is open-ended and encourages the user to provide thoughtful and detailed responses. The question must be generated in the language specified by the user.
+        
+        **Examples:**
+        
+        1. **Input**:
+           - Topic: "Work"
+           - Language: "en"
+           - Tags: ["challenges", "productivity"]
+           
+           **Generated Question**:
+           "What challenges did you face at work today, and how did you manage to stay productive?"
+        
+        2. **Input**:
+           - Topic: "Family"
+           - Language: "pl"
+           - Tags: ["family time", "conflict resolution"]
+           
+           **Generated Question**:
+           "Jakie wydarzenia miały miejsce dziś w Twoim życiu rodzinnym? Czy doszło do jakichś konfliktów, które musiałeś/aś rozwiązać?"
+        """;
 }

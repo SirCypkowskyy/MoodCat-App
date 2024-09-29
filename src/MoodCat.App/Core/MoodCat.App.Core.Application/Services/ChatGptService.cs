@@ -11,6 +11,7 @@ using MoodCat.App.Common.BuildingBlocks.Abstractions.CQRS;
 using MoodCat.App.Common.BuildingBlocks.Extensions;
 using MoodCat.App.Core.Application.DTOs.OpenAI.ChatGPT;
 using MoodCat.App.Core.Application.OpenAI.Constants;
+using MoodCat.App.Core.Application.OpenAI.Queries.GetRandomQuestionForUser;
 using OpenAI.Chat;
 
 namespace MoodCat.App.Core.Application.Services;
@@ -23,7 +24,8 @@ public class ChatGptService(
     ILogger<SendGptPromptHandler> logger) : IChatGptService
 {
     /// <inheritdoc />
-    public async Task<ChatCompletion> GenerateResponse(SendGptPromptCommand command, CancellationToken cancellationToken)
+    public async Task<ChatCompletion> GenerateResponse(SendGptPromptCommand command,
+        CancellationToken cancellationToken)
     {
         var chatGptClient = new ChatClient(
             model: command.Request.Model,
@@ -32,17 +34,55 @@ public class ChatGptService(
         logger.LogDebug("Sending a prompt request to OpenAI");
 
         var messages = new List<ChatMessage>
-        { 
-            ChatMessage.CreateSystemMessage(OpenAIConstants.SystemInstruction),
-            ChatMessage.CreateSystemMessage(command.Request.Message),
+        {
+            ChatMessage.CreateSystemMessage(OpenAIConstants.SystemInstructionsForGeneratingSummary),
+            ChatMessage.CreateUserMessage(command.Request.Message),
         };
-        
+
         var completion = await chatGptClient.CompleteChatAsync(messages, cancellationToken: cancellationToken);
-        
+
         logger.LogDebug("Request was successfully sent");
-        
+
         return completion;
     }
 
-    
+    /// <inheritdoc />
+    public async Task<ChatCompletion> GenerateQuestionForUser(GetRandomQuestionForUserQuery query,
+        CancellationToken cancellationToken)
+    {
+        var chatGptClient = new ChatClient(
+            model: configuration.GetOpenAiGptModel(),
+            configuration.GetOpenAiApiKey()
+        );
+        logger.LogDebug("Sending a prompt request to OpenAI");
+
+        var messages = new List<ChatMessage>();
+        if (query.Tags is { Count: > 0 })
+        {
+            var tags = string.Join(", ", query.Tags.Select(x => "\"" + x + "\"").ToArray());
+
+            messages.AddRange([
+                ChatMessage.CreateSystemMessage(OpenAIConstants.SystemInstructionsForGeneratingQuestionForUser),
+                ChatMessage.CreateUserMessage($"**Input**:" +
+                                              $"\n- Topic: \"{query.Topic}\"" +
+                                              $"\n- Language: \"{query.Language}\"" +
+                                              $"\n- Tags: [{tags}]")
+            ]);
+        }
+        else
+        {
+            messages.AddRange([
+                ChatMessage.CreateSystemMessage(OpenAIConstants.SystemInstructionsForGeneratingQuestionForUser),
+                ChatMessage.CreateUserMessage($"**Input**:\n- Topic: \"{query.Topic}\"\n" +
+                                              $"- Language: \"{query.Language}\"")
+            ]);
+        }
+
+
+        var completion = await chatGptClient.CompleteChatAsync(messages, cancellationToken: cancellationToken);
+
+        logger.LogDebug("Request was successfully sent");
+
+        return completion;
+    }
 }
