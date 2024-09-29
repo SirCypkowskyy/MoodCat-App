@@ -1,4 +1,4 @@
-![logo](static/logo.png)
+![logo](image.png)
 
 # MoodCat (backend)
 
