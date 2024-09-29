@@ -44,7 +44,7 @@ builder.Services.AddSwaggerGen(opts =>
     //     In = ParameterLocation.Header,
     //     Name = "Authorization",
     //     Type = SecuritySchemeType.ApiKey,
-    //     Description = "Please enter into field the word 'Bearer' following by space and JWT"
+    //     Description = "Please enter into field the word 'Bearer' f   ollowing by space and JWT"
     // });
 
     // opts.OperationFilter<SecurityRequirementsOperationFilter>();
@@ -67,10 +67,10 @@ if (app.Environment.IsDevelopment())
 {
     await app.InitializeDatabaseAsync(app.Configuration);
     app.UseDeveloperExceptionPage();
-}   
+}
 
 // Custom Exception Handling
-// app.UseExceptionHandler(opts => { });
+app.UseExceptionHandler(opts => { });
 
 // Microsoft Identity 
 app.MapGroup("/api/auth/")

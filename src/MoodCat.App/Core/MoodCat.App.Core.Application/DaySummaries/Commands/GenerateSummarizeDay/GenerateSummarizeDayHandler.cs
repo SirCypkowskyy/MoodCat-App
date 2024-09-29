@@ -1,8 +1,10 @@
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MoodCat.App.Common.BuildingBlocks.Exceptions;
 using MoodCat.App.Common.BuildingBlocks.Extensions;
 using MoodCat.App.Core.Application.DTOs.DaySummaries;
 using MoodCat.App.Core.Application.DTOs.OpenAI.ChatGPT;
@@ -16,7 +18,7 @@ namespace MoodCat.App.Core.Application.DaySummaries.Commands.GenerateSummarizeDa
 /// <summary>
 /// Handler komendy od generowania podsumowania dnia
 /// </summary>
-public class GenerateSummarizeDayHandler(
+public partial class GenerateSummarizeDayHandler(
     IApplicationDbContext dbContext,
     IChatGptService chatGptService,
     IConfiguration config,
@@ -29,7 +31,9 @@ public class GenerateSummarizeDayHandler(
     {
         var dateOnlyToday = DateOnly.FromDateTime(DateTime.Now);
         var existingSummaryForTheDay = await dbContext.DaysSummaries
-            .FirstOrDefaultAsync(x => x.SummaryDate == dateOnlyToday, cancellationToken: cancellationToken);
+            .FirstOrDefaultAsync(x =>
+                    x.SummaryDate == dateOnlyToday && x.UserId == command.UserId,
+                cancellationToken: cancellationToken);
 
         var summaryForTheDayExists = existingSummaryForTheDay != null;
 
@@ -65,6 +69,10 @@ public class GenerateSummarizeDayHandler(
             .Where(x => x.UserId == command.UserId && x.CreatedAt!.Value.Date == DateTime.Now.Date)
             .ToListAsync(cancellationToken: cancellationToken);
 
+        // Jeśli nie ma żadnych notatek, wyrzuć wyjątek
+        if(properNotes is null || properNotes.Count == 0)
+            throw new NotFoundException("Day summary couldn't be created, because user didn't create any notes today");
+        
         var contentMerged = properNotes
             .Select(x => x.Content.Value)
             .Aggregate((x, y) => $"{x}\n{y}");
@@ -82,6 +90,14 @@ public class GenerateSummarizeDayHandler(
             var arrayOfStrings = completedMessage.Content.Select(x => x.Text).ToArray();
 
             var joined = string.Join("", arrayOfStrings);
+            
+            // Walidacja, że stworzony string to json
+            var isProperJson = JsonRegex().IsMatch(joined);
+
+            if (!isProperJson)
+                throw new InternalServerException(
+                    "Wygenerowane podsumowanie dnia nie jest zapisane w odpowiednim formacie JSON!");
+            
             var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(joined)!;
 
             if (summaryForTheDayExists)
@@ -179,4 +195,9 @@ public class GenerateSummarizeDayHandler(
             )
         );
     }
+    
+    private const string JsonPattern = "(?<json>{(?:[^{}]|(?<Nested>{)|(?<-Nested>}))*(?(Nested)(?!))})";
+
+    [GeneratedRegex(JsonPattern)]
+    private static partial Regex JsonRegex();
 }
