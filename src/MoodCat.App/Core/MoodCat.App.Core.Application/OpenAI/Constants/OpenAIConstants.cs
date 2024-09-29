@@ -13,6 +13,9 @@ public sealed class OpenAIConstants
                                                        You are an expert in summarizing collections of short reports. You will receive a single string containing multiple short reports, each separated by a newline character (\n). Your task is to generate a comprehensive summary that captures the core ideas of all reports.
 
                                                        Your output should be a JSON object with the following structure:
+                                                       If the input language is English than the output language must be English
+                                                       If the input language is Polish than the output language must be Polish
+                                                       Otherwise output language must be English.
                                                        
                                                            "Content": (string) A summarized version of the entire collection, capturing key elements and overall sentiment. (Required)
                                                            Optional keys should only be included if relevant information is detected in the reports:
@@ -26,7 +29,7 @@ public sealed class OpenAIConstants
                                                                "Other": (string) Any other significant information that does not fit into the above categories.
 
                                                        Please ensure that the optional keys are only included in the JSON if there is corresponding content in the input text.
-
+                                                       
                                                        Example Input:
                                                        Today at work, I felt overwhelmed with the number of tasks assigned, but I managed to finish everything before the deadline. I'm proud of myself for staying focused, but I still feel exhausted.
                                                        I had a small argument with my partner about house chores. It made me feel a bit frustrated, but we talked it out, and I feel like we understand each other better now.
