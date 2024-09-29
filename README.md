@@ -3,6 +3,7 @@
 # MoodCat (backend)
 
 Backend aplikacji zespołu `!jva` na konkurs [HackYeah 2024](https://hackyeah.pl/). 
+Zobacz ten nasz frontend! [MoodCat frontend](https://github.com/kpostekk/moodcat-app)!
 
 ## Spis treści
 
