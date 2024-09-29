@@ -22,10 +22,8 @@ public class CreateNoteAudioHandler(IApplicationDbContext dbContext, IWhisperSer
 
         string noteContent;
 
-        if (!string.IsNullOrWhiteSpace(command.ProvidedQuestion))
-            noteContent = "Question: " + command.ProvidedQuestion + "\n\n" + "Answer: " + noteContentFromAudio;
-        else
-            noteContent = noteContentFromAudio;
+        noteContent = noteContentFromAudio;
+
 
         var note = NoteEntity.Create(
             command.UserId,
@@ -33,10 +31,10 @@ public class CreateNoteAudioHandler(IApplicationDbContext dbContext, IWhisperSer
             NoteContent.Of(noteContent),
             command.HappinessScore
         );
-        
-        var usr = (await dbContext.Users.FindAsync(new object?[] {command.UserId}, cancellationToken))!;
-        
-        if(usr.AssignedSpecialistId != null)
+
+        var usr = (await dbContext.Users.FindAsync(new object?[] { command.UserId }, cancellationToken))!;
+
+        if (usr.AssignedSpecialistId != null)
             note.SetAllowedNoteSupervisorId(usr.AssignedSpecialistId);
 
         var datetime = DateTime.Now;

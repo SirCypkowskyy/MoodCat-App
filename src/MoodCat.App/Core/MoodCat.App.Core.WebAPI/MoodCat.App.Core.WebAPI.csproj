@@ -30,7 +30,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Endpoints\Questions\GetActiveQuestions\" />
       <Folder Include="Endpoints\Questions\GetQuestions\" />
     </ItemGroup>
 

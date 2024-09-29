@@ -23,8 +23,7 @@ public class CreateNoteTextHandler(IApplicationDbContext dbContext, ILogger<Crea
         string noteContent;
 
         if (!string.IsNullOrWhiteSpace(command.RequestDataDTO.Meta.ProvidedQuestion))
-            noteContent = "Question: " + command.RequestDataDTO.Meta.ProvidedQuestion + "\n\n" + "Answer: " +
-                          command.RequestDataDTO.Text;
+            noteContent =  "\n" + command.RequestDataDTO.Text + "\n";
         else
             noteContent = command.RequestDataDTO.Text ?? "No note content";
 
