@@ -1,10 +1,9 @@
 using System.Security.Claims;
-using Azure.Core;
 using Carter;
 using MediatR;
 using MoodCat.App.Core.Application.DaySummaries.Commands.GenerateSummarizeDay;
 
-namespace MoodCat.App.Core.WebAPI.Endpoints.DaySummaries;
+namespace MoodCat.App.Core.WebAPI.Endpoints.Summaries;
 
 /// <summary>
 /// Żądanie stworzenia summary dla dnia
@@ -12,7 +11,7 @@ namespace MoodCat.App.Core.WebAPI.Endpoints.DaySummaries;
 /// <param name="ForceRefresh">
 /// Wymuś odświeżenie
 /// </param>
-public record CreateDaySummaryRequest(bool ForceRefresh = false);
+public record CreateSummaryRequest(bool ForceRefresh = false);
 
 /// <summary>
 /// Endpoint od tworzenia / aktualizacji przez AI podsumowania dnia 
@@ -23,7 +22,7 @@ public class CreateDaySummaryEndpoint : ICarterModule
     public void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapPost("/api/day-summaries/generate-summarize-day",
-                async (ISender sender, CreateDaySummaryRequest Request, ClaimsPrincipal claimsPrincipal) =>
+                async (ISender sender, CreateSummaryRequest Request, ClaimsPrincipal claimsPrincipal) =>
                 {
                     var userId = claimsPrincipal.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
