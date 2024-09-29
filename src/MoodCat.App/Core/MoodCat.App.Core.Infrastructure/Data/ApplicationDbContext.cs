@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MoodCat.App.Core.Domain.DaySummaries;
 using MoodCat.App.Core.Domain.Notes;
+using MoodCat.App.Core.Domain.Questions;
 using MoodCat.App.Core.Domain.Users;
 using MoodCat.Core.Application.Data;
 
@@ -20,6 +21,9 @@ public class ApplicationDbContext : IdentityDbContext<User>, IApplicationDbConte
 
     /// <inheritdoc />
     public DbSet<DaySummaryEntity> DaysSummaries => Set<DaySummaryEntity>();
+
+    /// <inheritdoc />
+    public DbSet<QuestionEntity> Questions => Set<QuestionEntity>();
 
     /// <inheritdoc />
     public DbSet<User> Users => Set<User>();

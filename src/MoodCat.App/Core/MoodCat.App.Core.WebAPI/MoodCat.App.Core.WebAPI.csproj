@@ -29,4 +29,10 @@
       <ProjectReference Include="..\MoodCat.App.Core.Infrastructure\MoodCat.App.Core.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Endpoints\Questions\CompleteQuestion\" />
+      <Folder Include="Endpoints\Questions\GetActiveQuestions\" />
+      <Folder Include="Endpoints\Questions\GetQuestions\" />
+    </ItemGroup>
+
 </Project>
