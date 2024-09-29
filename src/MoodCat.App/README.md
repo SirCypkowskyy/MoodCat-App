@@ -1,3 +1,5 @@
+[!Logo](static/logo.png)
+
 # MoodCat (backend)
 
 Backend aplikacji zespołu `!jva` na konkurs [HackYeah 2024](https://hackyeah.pl/). 

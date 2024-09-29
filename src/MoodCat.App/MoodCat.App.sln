@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodCat.App.Core.Infrastruc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodCat.App.Core.WebAPI", "Core\MoodCat.App.Core.WebAPI\MoodCat.App.Core.WebAPI.csproj", "{76BFCED5-EFAB-486D-A2D3-6AFC1F8B198C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "static", "static", "{A9584284-36F7-4D3E-854E-FF21FBCD621E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

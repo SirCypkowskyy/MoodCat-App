@@ -31,7 +31,7 @@ public static class DatabaseExtensions
         logger.LogInformation("Database migrated");
         await SeedDataAsync(context, configuration, logger);
     }
-
+        
     /// <summary>
     /// Seeduje bazę danych
     /// </summary>
