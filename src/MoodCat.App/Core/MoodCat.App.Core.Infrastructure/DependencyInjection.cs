@@ -60,6 +60,7 @@ public static class DependencyInjection
         // Konfiguracja Microsoft Identity
         services.AddIdentityCore<User>(opts =>
             {
+                opts.User.RequireUniqueEmail = true;
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddApiEndpoints();
