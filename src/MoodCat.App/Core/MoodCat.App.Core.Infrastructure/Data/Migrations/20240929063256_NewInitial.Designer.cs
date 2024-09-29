@@ -13,8 +13,8 @@ using MoodCat.App.Core.Infrastructure.Data;
 namespace MoodCat.App.Core.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240928154240_Initial")]
-    partial class Initial
+    [Migration("20240929063256_NewInitial")]
+    partial class NewInitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -159,6 +159,96 @@ namespace MoodCat.App.Core.Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MoodCat.App.Core.Domain.DaySummaries.DaySummaryEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Family")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Interests")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Memories")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OriginalFamily")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OriginalInterests")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OriginalMemories")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OriginalOther")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OriginalPatientGeneralFunctioning")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OriginalPhysicalHealth")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OriginalReportedProblems")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OriginalSocialRelationships")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OriginalWork")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Other")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientGeneralFunctioning")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhysicalHealth")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportedProblems")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SocialRelationships")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("SummaryDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Work")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DaysSummaries", (string)null);
+                });
+
             modelBuilder.Entity("MoodCat.App.Core.Domain.Notes.NoteAttachment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -213,6 +303,12 @@ namespace MoodCat.App.Core.Infrastructure.Data.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("DaySummaryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double?>("Happiness")
+                        .HasColumnType("float");
+
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("datetime2");
 
@@ -248,6 +344,8 @@ namespace MoodCat.App.Core.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AllowedNoteSupervisorId");
+
+                    b.HasIndex("DaySummaryId");
 
                     b.HasIndex("UserId");
 
@@ -378,6 +476,15 @@ namespace MoodCat.App.Core.Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MoodCat.App.Core.Domain.DaySummaries.DaySummaryEntity", b =>
+                {
+                    b.HasOne("MoodCat.App.Core.Domain.Users.User", null)
+                        .WithMany("DaySummaries")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("MoodCat.App.Core.Domain.Notes.NoteAttachment", b =>
                 {
                     b.HasOne("MoodCat.App.Core.Domain.Notes.NoteEntity", null)
@@ -390,6 +497,10 @@ namespace MoodCat.App.Core.Infrastructure.Data.Migrations
                     b.HasOne("MoodCat.App.Core.Domain.Users.User", null)
                         .WithMany()
                         .HasForeignKey("AllowedNoteSupervisorId");
+
+                    b.HasOne("MoodCat.App.Core.Domain.DaySummaries.DaySummaryEntity", null)
+                        .WithMany("Notes")
+                        .HasForeignKey("DaySummaryId");
 
                     b.HasOne("MoodCat.App.Core.Domain.Users.User", null)
                         .WithMany()
@@ -405,9 +516,19 @@ namespace MoodCat.App.Core.Infrastructure.Data.Migrations
                         .HasForeignKey("AssignedSpecialistId");
                 });
 
+            modelBuilder.Entity("MoodCat.App.Core.Domain.DaySummaries.DaySummaryEntity", b =>
+                {
+                    b.Navigation("Notes");
+                });
+
             modelBuilder.Entity("MoodCat.App.Core.Domain.Notes.NoteEntity", b =>
                 {
                     b.Navigation("Attachments");
+                });
+
+            modelBuilder.Entity("MoodCat.App.Core.Domain.Users.User", b =>
+                {
+                    b.Navigation("DaySummaries");
                 });
 #pragma warning restore 612, 618
         }

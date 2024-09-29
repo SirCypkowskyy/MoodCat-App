@@ -312,9 +312,6 @@ namespace MoodCat.App.Core.Infrastructure.Data.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("QuestionId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -347,55 +344,9 @@ namespace MoodCat.App.Core.Infrastructure.Data.Migrations
 
                     b.HasIndex("DaySummaryId");
 
-                    b.HasIndex("QuestionId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Notes", (string)null);
-                });
-
-            modelBuilder.Entity("MoodCat.App.Core.Domain.Notes.NoteQuestionEntity", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Question")
-                        .IsRequired()
-                        .HasMaxLength(125)
-                        .HasColumnType("nvarchar(125)");
-
-                    b.Property<string>("SpecialistId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SpecialistId")
-                        .IsUnique();
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("NotesQuestions", (string)null);
                 });
 
             modelBuilder.Entity("MoodCat.App.Core.Domain.Users.User", b =>
@@ -548,28 +499,9 @@ namespace MoodCat.App.Core.Infrastructure.Data.Migrations
                         .WithMany("Notes")
                         .HasForeignKey("DaySummaryId");
 
-                    b.HasOne("MoodCat.App.Core.Domain.Notes.NoteQuestionEntity", null)
-                        .WithMany()
-                        .HasForeignKey("QuestionId");
-
                     b.HasOne("MoodCat.App.Core.Domain.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MoodCat.App.Core.Domain.Notes.NoteQuestionEntity", b =>
-                {
-                    b.HasOne("MoodCat.App.Core.Domain.Users.User", null)
-                        .WithOne()
-                        .HasForeignKey("MoodCat.App.Core.Domain.Notes.NoteQuestionEntity", "SpecialistId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MoodCat.App.Core.Domain.Users.User", null)
-                        .WithOne()
-                        .HasForeignKey("MoodCat.App.Core.Domain.Notes.NoteQuestionEntity", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

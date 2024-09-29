@@ -51,15 +51,15 @@ public class NoteEntity : Aggregate<NoteId>
     /// </summary>
     public double? Happiness { get; private set; }
 
-    /// <summary>
-    /// Id pytania, na którego notatka jest odpowiedzią
-    /// </summary>
-    public long? QuestionId { get; private set; }
-
-    /// <summary>
-    /// Czy notatka jest odpowiedzią na pytanie
-    /// </summary>
-    public bool IsAnswerToQuestion => QuestionId is not null;
+    // /// <summary>
+    // /// Id pytania, na którego notatka jest odpowiedzią
+    // /// </summary>
+    // public long? QuestionId { get; private set; }
+    //
+    // /// <summary>
+    // /// Czy notatka jest odpowiedzią na pytanie
+    // /// </summary>
+    // public bool IsAnswerToQuestion => QuestionId is not null;
 
     /// <summary>
     /// Tworzy nową notatkę.
@@ -159,10 +159,10 @@ public class NoteEntity : Aggregate<NoteId>
         DaySummaryId = daySummaryId;
     }
 
-    public void AssignToQuestion(long questionId)
-    {
-        ArgumentNullException.ThrowIfNull(questionId, nameof(questionId));
-
-        QuestionId = questionId;
-    }
+    // public void AssignToQuestion(long questionId)
+    // {
+    //     ArgumentNullException.ThrowIfNull(questionId, nameof(questionId));
+    //
+    //     QuestionId = questionId;
+    // }
 }

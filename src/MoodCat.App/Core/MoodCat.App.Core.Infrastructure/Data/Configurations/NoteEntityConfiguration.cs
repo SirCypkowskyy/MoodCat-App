@@ -73,9 +73,9 @@ public class NoteEntityConfiguration : IEntityTypeConfiguration<NoteEntity>
             .WithMany(e => e.Notes)
             .HasForeignKey(x => x.DaySummaryId);
 
-        // Relacja notatki do pytania
-        builder.HasOne<NoteQuestionEntity>()
-            .WithMany()
-            .HasForeignKey(x => x.QuestionId);
+        // // Relacja notatki do pytania
+        // builder.HasOne<NoteQuestionEntity>()
+        //     .WithMany()
+        //     .HasForeignKey(x => x.QuestionId);
     }
 }
