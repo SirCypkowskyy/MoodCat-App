@@ -5,7 +5,6 @@ using MoodCat.App.Core.Domain.Notes.ValueObjects;
 
 namespace MoodCat.App.Core.Domain.Notes;
 
-
 /// <summary>
 /// Encja reprezentująca notatkę.
 /// </summary>
@@ -15,42 +14,52 @@ public class NoteEntity : Aggregate<NoteId>
     /// Identyfikator użytkownika, do którego należy notatka.
     /// </summary>
     public string UserId { get; private set; } = default!;
-    
+
     /// <summary>
     /// Opcjonalny identyfikator użytkownika, który jest
     /// dozwolony do wyświetlania notatki jako doktor/terapeuta 
     /// </summary>
     public string? AllowedNoteSupervisorId { get; private set; }
-    
+
     /// <summary>
     /// Tytuł notatki.
     /// </summary>
     public NoteTitle Title { get; private set; } = default!;
-    
+
     /// <summary>
     /// Zawartość notatki.
     /// </summary>
     public NoteContent Content { get; private set; } = default!;
-    
+
     /// <summary>
     /// Załączniki notatki.
     /// </summary>
     private readonly List<NoteAttachment> _attachments = [];
-    
+
     /// <summary>
     /// Załączniki notatki.
     /// </summary>
     public IReadOnlyList<NoteAttachment> Attachments => _attachments.AsReadOnly();
-    
+
     /// <summary>
     /// Klucz opcy opcjonalnego podsumowania dnia, do którego notatka należy 
     /// </summary>
     public Guid? DaySummaryId { get; private set; }
-    
+
     /// <summary>
     /// Poziom zadowolenia z dnia
     /// </summary>
     public double? Happiness { get; private set; }
+
+    /// <summary>
+    /// Id pytania, na którego notatka jest odpowiedzią
+    /// </summary>
+    public long? QuestionId { get; private set; }
+
+    /// <summary>
+    /// Czy notatka jest odpowiedzią na pytanie
+    /// </summary>
+    public bool IsAnswerToQuestion => QuestionId is not null;
 
     /// <summary>
     /// Tworzy nową notatkę.
@@ -73,21 +82,21 @@ public class NoteEntity : Aggregate<NoteId>
         ArgumentNullException.ThrowIfNull(userId, nameof(userId));
         ArgumentNullException.ThrowIfNull(title, nameof(title));
         ArgumentNullException.ThrowIfNull(content, nameof(content));
-        
+
         var note = new NoteEntity
         {
             Id = NoteId.Of(Guid.NewGuid()),
-            UserId = userId,    
+            UserId = userId,
             Title = title,
             Content = content,
             Happiness = happinessLevel
         };
-        
+
         note.AddDomainEvent(new NoteCreatedDomainEvent(note));
 
         return note;
     }
-    
+
     /// <summary>
     /// Aktualizuje notatkę.
     /// </summary>
@@ -101,10 +110,10 @@ public class NoteEntity : Aggregate<NoteId>
     {
         ArgumentNullException.ThrowIfNull(title, nameof(title));
         ArgumentNullException.ThrowIfNull(content, nameof(content));
-        
+
         Title = title;
         Content = content;
-        
+
         AddDomainEvent(new NoteUpdatedDomainEvent(this));
     }
 
@@ -117,7 +126,7 @@ public class NoteEntity : Aggregate<NoteId>
         ArgumentNullException.ThrowIfNull(userId, nameof(userId));
         AllowedNoteSupervisorId = userId;
     }
-    
+
     /// <summary>
     /// Dodaje załącznik do notatki.
     /// </summary>
@@ -127,10 +136,10 @@ public class NoteEntity : Aggregate<NoteId>
     public void AddAttachment(NoteAttachment attachment)
     {
         ArgumentNullException.ThrowIfNull(attachment, nameof(attachment));
-        
+
         _attachments.Add(attachment);
     }
-    
+
     /// <summary>
     /// Usuwa załącznik z notatki.
     /// </summary>
@@ -140,7 +149,7 @@ public class NoteEntity : Aggregate<NoteId>
     public void RemoveAttachment(NoteAttachment attachment)
     {
         ArgumentNullException.ThrowIfNull(attachment, nameof(attachment));
-        
+
         _attachments.Remove(attachment);
     }
 
@@ -148,5 +157,12 @@ public class NoteEntity : Aggregate<NoteId>
     {
         ArgumentNullException.ThrowIfNull(daySummaryId, nameof(daySummaryId));
         DaySummaryId = daySummaryId;
+    }
+
+    public void AssignToQuestion(long questionId)
+    {
+        ArgumentNullException.ThrowIfNull(questionId, nameof(questionId));
+
+        QuestionId = questionId;
     }
 }
