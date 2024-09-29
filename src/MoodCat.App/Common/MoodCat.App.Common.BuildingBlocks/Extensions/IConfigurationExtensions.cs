@@ -37,8 +37,8 @@ public static class ConfigurationExtensions
         try
         {
 
-            var specialistPassword = configuration["Seed:SpecialistPassword"]!;
-            var patientPassword = configuration["Seed:PatientPassword"]!;
+            var specialistPassword = configuration["Seed:SpecialistPassword"] ?? throw new NullReferenceException("Nie znaleziono hasła specjalisty w appsettingsach!");
+            var patientPassword = configuration["Seed:PatientPassword"] ?? throw new NullReferenceException("Nie znaleziono hasła pacjenta w appsettingsach!");
 
             return (specialistPassword, patientPassword);
         }
@@ -59,7 +59,7 @@ public static class ConfigurationExtensions
     {
         try
         {
-            return configuration["OpenAi:ApiKey"]!;
+            return configuration["OpenAi:ApiKey"] ?? throw new NullReferenceException("Nie znaleziono hasła specjalisty w appsettingsach!");
         }
         catch (Exception e)
         {
@@ -76,7 +76,7 @@ public static class ConfigurationExtensions
     {
         try
         {       
-            return configuration["OpenAi:GptModel"]!;
+            return configuration["OpenAi:GptModel"] ?? throw new NullReferenceException("Nie znaleziono klucza openai w appsettingsach!");
         }
         catch (Exception e)
         {
