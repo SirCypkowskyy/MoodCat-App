@@ -15,7 +15,14 @@ public static class ConfigurationExtensions
     /// <returns></returns>
     public static string GetDbConnectionString(this IConfiguration configuration)
     {
-        return configuration.GetConnectionString("AppDbConnection")!;
+        try
+        {
+            return configuration.GetConnectionString("AppDbConnection")!;
+        }
+        catch (Exception e)
+        {
+            return Environment.GetEnvironmentVariable("ConnectionStrings_AppDbConnection")!;
+        }
     }
 
     /// <summary>
@@ -26,10 +33,20 @@ public static class ConfigurationExtensions
     public static (string specialistPassword, string patientPassword) GetSeedUsersPasswords(
         this IConfiguration configuration)
     {
-        var specialistPassword = configuration["Seed:SpecialistPassword"]!;
-        var patientPassword = configuration["Seed:PatientPassword"]!;
-        
-        return (specialistPassword, patientPassword);
+        try
+        {
+
+            var specialistPassword = configuration["Seed:SpecialistPassword"]!;
+            var patientPassword = configuration["Seed:PatientPassword"]!;
+
+            return (specialistPassword, patientPassword);
+        }
+        catch (Exception e)
+        {
+            var specialistPassword = Environment.GetEnvironmentVariable("Seed_SpecialistPassword")!;
+            var patientPassword = Environment.GetEnvironmentVariable("Seed_PatientPassword")!;
+            return (specialistPassword, patientPassword);
+        }
     }
 
     /// <summary>
@@ -39,7 +56,14 @@ public static class ConfigurationExtensions
     /// <returns></returns>
     public static string GetOpenAiApiKey(this IConfiguration configuration)
     {
-        return configuration["OpenAi:ApiKey"]!;
+        try
+        {
+            return configuration["OpenAi:ApiKey"]!;
+        }
+        catch (Exception e)
+        {
+            return Environment.GetEnvironmentVariable("OpenAi_ApiKey")!;
+        }
     }
 
     /// <summary>
@@ -49,6 +73,13 @@ public static class ConfigurationExtensions
     /// <returns></returns>
     public static string GetOpenAiGptModel(this IConfiguration configuration)
     {
-        return configuration["OpenAi:GptModel"]!;
+        try
+        {       
+            return configuration["OpenAi:GptModel"]!;
+        }
+        catch (Exception e)
+        {
+            return Environment.GetEnvironmentVariable("OpenAi_GptModel")!;
+        }
     }
 }
