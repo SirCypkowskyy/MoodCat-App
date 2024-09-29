@@ -51,4 +51,4 @@ Lekarz ma dostęp do danych swoich pacjentów, na podstawie których może plano
 - Carter - Lepsza obsługa minimal API
 - Mapster - konwersja obiektów DTO na modele i vice versa
 - Microsoft Identity - autoscaffoldowana autoryzacja i autentykacja
-
+- Mediator - delegowanie zapytań do wykonania
