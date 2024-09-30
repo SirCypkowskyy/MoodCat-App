@@ -6,6 +6,8 @@ Backend aplikacji zespołu `!jva` na konkurs [HackYeah 2024](https://hackyeah.pl
 
 Zobacz też nasz frontend [MoodCat frontend](https://github.com/kpostekk/moodcat-app)!
 
+Strona projektu [na ChallengeRocket](https://challengerocket.com/hackyeah-2024/works/moodcat--your-therapy-journal-8acf8b#go-pagecontent) 
+
 ## Spis treści
 
 1. [Opis](#Opis)
